@@ -1,5 +1,10 @@
 const canvas = document.querySelector('#game')
+const btnUp = document.querySelector('#up')
+const btnLeft = document.querySelector('#left')
+const btnRight = document.querySelector('#right')
+const btnDown = document.querySelector('#down')
 const game = canvas.getContext('2d')
+ 
 
 let canvasSize
 let elementsSize
@@ -39,6 +44,34 @@ function startGame() {
         })
     });
 
+}
+
+//Eventos y botones
+/*No hay una función que llame al teclado, sin embargo podemos hacer uso de window, usamos el argumendo keydown para que se active una vez presionamos una tecla*/
+window.addEventListener('keydown', moveByKeys)
+btnUp.addEventListener('click', moveUp)
+btnLeft.addEventListener('click', moveLeft)
+btnRight.addEventListener('click', moveRight)
+btnDown.addEventListener('click', moveDown)
+
+function moveByKeys(event) {
+    if (event.key == 'ArrowUp') moveUp()
+    else if (event.key == 'ArrowLeft') moveLeft()
+    else if (event.key == 'ArrowRight') moveRight()
+    else if (event.key == 'ArrowDown') moveDown()
+}
+
+function moveUp(){
+    console.log('Me quiero mover hacia arriba')
+}
+function moveLeft(){
+    console.log('Me quiero mover hacia izq')
+}
+function moveRight(){
+    console.log('Me quiero mover hacia der')
+}
+function moveDown(){
+    console.log('Me quiero mover hacia abajo')
 }
 
 
