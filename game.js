@@ -1,16 +1,28 @@
 const canvas = document.querySelector('#game')
+//botones movimiento
 const btnUp = document.querySelector('#up')
 const btnLeft = document.querySelector('#left')
 const btnRight = document.querySelector('#right')
 const btnDown = document.querySelector('#down')
+//canvas
 const game = canvas.getContext('2d')
- 
+//Posición del juegador
+const playerPosition = {
+    x: undefined,
+    y: undefined,
+} 
 
 let canvasSize
 let elementsSize
-
+//Eventos
 window.addEventListener('load', setCanvasSize)
 window.addEventListener('resize', setCanvasSize)
+/*No hay una función que llame al teclado, sin embargo podemos hacer uso de window, usamos el argumendo keydown para que se active una vez presionamos una tecla*/
+window.addEventListener('keydown', moveByKeys)
+btnUp.addEventListener('click', moveUp)
+btnLeft.addEventListener('click', moveLeft)
+btnRight.addEventListener('click', moveRight)
+btnDown.addEventListener('click', moveDown)
 
 function setCanvasSize() {
     if (window.innerHeight > window.innerWidth) {
@@ -40,19 +52,24 @@ function startGame() {
             const emoji = emojis[col]
             const posX = elementsSize * (colI + 1)
             const posY = elementsSize * (rowI + 1)
+
+            if (col == 'O') {
+                playerPosition.x = posX
+                playerPosition.y = posY
+            }
             game.fillText(emoji, posX, posY)
         })
     });
+    movePlayer()
 
 }
+//Función mover player
+function movePlayer() {
+    game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y)
+}
+//Función limpiar el mapa
 
-//Eventos y botones
-/*No hay una función que llame al teclado, sin embargo podemos hacer uso de window, usamos el argumendo keydown para que se active una vez presionamos una tecla*/
-window.addEventListener('keydown', moveByKeys)
-btnUp.addEventListener('click', moveUp)
-btnLeft.addEventListener('click', moveLeft)
-btnRight.addEventListener('click', moveRight)
-btnDown.addEventListener('click', moveDown)
+
 
 function moveByKeys(event) {
     if (event.key == 'ArrowUp') moveUp()
@@ -63,6 +80,8 @@ function moveByKeys(event) {
 
 function moveUp(){
     console.log('Me quiero mover hacia arriba')
+    playerPosition.y -= elementsSize
+    movePlayer()
 }
 function moveLeft(){
     console.log('Me quiero mover hacia izq')
