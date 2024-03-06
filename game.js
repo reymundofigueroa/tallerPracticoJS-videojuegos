@@ -6,14 +6,22 @@ const btnRight = document.querySelector('#right')
 const btnDown = document.querySelector('#down')
 //canvas
 const game = canvas.getContext('2d')
-//Posición del juegador
+let canvasSize
+let elementsSize
+
+//Posición incial del jugador
 const playerPosition = {
     x: undefined,
     y: undefined,
 } 
+//posición inicial regalo
+const giftPosition = {
+    x: undefined,
+    y: undefined,
+}
+//posición inicial enemigos
+let enemyPositions = []
 
-let canvasSize
-let elementsSize
 //Eventos
 window.addEventListener('load', setCanvasSize)
 window.addEventListener('resize', setCanvasSize)
@@ -46,7 +54,7 @@ function startGame() {
     const mapRows = map.trim().split('\n')
     const mapRowCols = mapRows.map(row => row.trim().split(''))
     console.log(mapRowCols)
-
+    enemyPositions = []
     game.clearRect(0,0,canvasSize,canvasSize)
     mapRowCols.forEach((row, rowI) => {
         row.forEach((col, colI) => {
@@ -59,6 +67,14 @@ function startGame() {
                     playerPosition.x = posX
                     playerPosition.y = posY
                 }
+            } else if (col == 'I') {
+                giftPosition.x = posX
+                giftPosition.y = posY
+            } else if (col == 'X') {
+                enemyPositions.push({
+                    x: posX,
+                    y: posY,
+                })
             }
             game.fillText(emoji, posX, posY)
         })
@@ -68,6 +84,20 @@ function startGame() {
 }
 //Función mover player
 function movePlayer() {
+    const giftColisionX = playerPosition.x == giftPosition.x
+    const giftColisionY = playerPosition.y == giftPosition.y
+    const giftColision = giftColisionX && giftColisionY
+    if (giftColision) {
+        console.log('Subiste de nivel');
+    }
+    const enemyColision = enemyPositions.find(enemy => {
+        const enemyColisionX = enemy.x.toFixed(3) == playerPosition.x.toFixed(3)
+        const enemyColisionY = enemy.y.toFixed(3) == playerPosition.y.toFixed(3)
+        return enemyColisionX && enemyColisionY
+    })
+    if (enemyColision) {
+        console.log('chocaste contra un enemigo');
+    }
     game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y)
 }
 
