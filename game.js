@@ -8,6 +8,7 @@ const btnDown = document.querySelector('#down')
 const game = canvas.getContext('2d')
 let canvasSize
 let elementsSize
+let level = 0
 
 //Posición incial del jugador
 const playerPosition = {
@@ -50,7 +51,13 @@ function startGame() {
     game.font = elementsSize + 'px Verdana' //siempre debe ir antes del fillText
     game.textAlign = 'end'
 
-    const map = maps[0]
+    const map = maps[level]
+    // ganaste el juego
+    if (!map) {
+        gameWin()
+        return
+    }
+
     const mapRows = map.trim().split('\n')
     const mapRowCols = mapRows.map(row => row.trim().split(''))
     console.log(mapRowCols)
@@ -88,7 +95,7 @@ function movePlayer() {
     const giftColisionY = playerPosition.y == giftPosition.y
     const giftColision = giftColisionX && giftColisionY
     if (giftColision) {
-        console.log('Subiste de nivel');
+        winLevel();
     }
     const enemyColision = enemyPositions.find(enemy => {
         const enemyColisionX = enemy.x.toFixed(3) == playerPosition.x.toFixed(3)
@@ -99,6 +106,17 @@ function movePlayer() {
         console.log('chocaste contra un enemigo');
     }
     game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y)
+}
+
+//Cambiar de mapa
+function winLevel() {
+    console.log('subiste de nivel');
+    level++
+    startGame()
+}
+//Conpletaste el juego
+function gameWin() {
+    console.log('ganaste el juego');
 }
 
 function moveByKeys(event) {
