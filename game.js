@@ -4,11 +4,13 @@ const btnUp = document.querySelector('#up')
 const btnLeft = document.querySelector('#left')
 const btnRight = document.querySelector('#right')
 const btnDown = document.querySelector('#down')
+const spanLives = document.querySelector('#lives')
 //canvas
 const game = canvas.getContext('2d')
 let canvasSize
 let elementsSize
 let level = 0
+let lives = 3
 
 //Posición incial del jugador
 const playerPosition = {
@@ -91,8 +93,8 @@ function startGame() {
 }
 //Función mover player
 function movePlayer() {
-    const giftColisionX = playerPosition.x == giftPosition.x
-    const giftColisionY = playerPosition.y == giftPosition.y
+    const giftColisionX = playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3)
+    const giftColisionY = playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3)
     const giftColision = giftColisionX && giftColisionY
     if (giftColision) {
         winLevel();
@@ -103,21 +105,38 @@ function movePlayer() {
         return enemyColisionX && enemyColisionY
     })
     if (enemyColision) {
-        console.log('chocaste contra un enemigo');
+        levelFail();
     }
     game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y)
 }
 
-//Cambiar de mapa
+//Cambiar de mapa por subir de nivel
 function winLevel() {
     console.log('subiste de nivel');
     level++
+    startGame()
+}
+//Función cuando pierdes el nivel
+function levelFail() {
+    console.log('chocaste contra un enemigo, perdiste :c')
+    lives--
+    if (lives <= 0){
+        level = 0
+        lives = 3
+    }
+/*Cuando chocamos con un enemigo la posición de nuestro playet vuelve a ser undefined, luego llamamos a la función starGame() para que ubique nuevamente a nuestro player en la puerta de salida */    
+    playerPosition.x = undefined
+    playerPosition.y = undefined
     startGame()
 }
 //Conpletaste el juego
 function gameWin() {
     console.log('ganaste el juego');
 }
+function showLives() {
+    
+}
+
 
 function moveByKeys(event) {
     if (event.key == 'ArrowUp') moveUp()
