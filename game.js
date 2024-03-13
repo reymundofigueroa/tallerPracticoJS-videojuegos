@@ -63,6 +63,9 @@ function startGame() {
     const mapRows = map.trim().split('\n')
     const mapRowCols = mapRows.map(row => row.trim().split(''))
     console.log(mapRowCols)
+
+    showLives()
+
     enemyPositions = []
     game.clearRect(0,0,canvasSize,canvasSize)
     mapRowCols.forEach((row, rowI) => {
@@ -120,6 +123,7 @@ function winLevel() {
 function levelFail() {
     console.log('chocaste contra un enemigo, perdiste :c')
     lives--
+
     if (lives <= 0){
         level = 0
         lives = 3
@@ -134,7 +138,11 @@ function gameWin() {
     console.log('ganaste el juego');
 }
 function showLives() {
-    
+    const heartsArray = Array(lives).fill(emojis['HEART'])
+    spanLives.innerHTML = ""
+    heartsArray.forEach(heart => spanLives.append(heart))
+
+
 }
 
 
