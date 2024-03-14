@@ -4,8 +4,13 @@ const btnUp = document.querySelector('#up')
 const btnLeft = document.querySelector('#left')
 const btnRight = document.querySelector('#right')
 const btnDown = document.querySelector('#down')
+//Vidas
 const spanLives = document.querySelector('#lives')
+//tiempo
 const spanTime = document.querySelector('#time')
+//Resultados
+const spanRecord = document.querySelector('#record')
+const pResult = document.querySelector('#result')
 //canvas
 const game = canvas.getContext('2d')
 let canvasSize
@@ -46,7 +51,7 @@ function setCanvasSize() {
         canvasSize = window.innerWidth * 0.8
     } else {
         canvasSize = window.innerHeight * 0.8
-    } 
+    }
 
     canvas.setAttribute('width', canvasSize)
     canvas.setAttribute('height', canvasSize)
@@ -70,11 +75,12 @@ function startGame() {
     if (!timeStar) {
         timeStar = Date.now()
         timeInterval = setInterval(showTime, 100)
+        showRecord()
     }
 
     const mapRows = map.trim().split('\n')
     const mapRowCols = mapRows.map(row => row.trim().split(''))
-    console.log(mapRowCols)
+
 
     showLives()
 
@@ -149,6 +155,24 @@ function levelFail() {
 function gameWin() {
     console.log('ganaste el juego');
     clearInterval(timeInterval)
+
+    //Guardar tiempos para crear record
+    const recordTime = localStorage.getItem('record_time');
+    const playerTime = Date.now() - timeStar;
+
+    if (recordTime) {
+        if (recordTime >= playerTime) {
+            localStorage.setItem('record_time', playerTime);
+            pResult.innerHTML = 'Superaste el record';
+          } else {
+            pResult.innerHTML = 'Sorry you are a manco';
+          }
+        } else {
+          localStorage.setItem('record_time', playerTime);
+          pResult.innerHTML = 'Nuevo record';
+    }
+    console.log({recordTime, playerTime});
+
 }
 //Mostrar vidas en html
 function showLives() {
@@ -163,6 +187,10 @@ function showLives() {
 
 function showTime() {
     spanTime.innerHTML = ((Date.now() - timeStar) / 1000)
+}
+
+function showRecord() {
+    spanRecord.innerHTML = localStorage.getItem('record_time')
 }
 
 function moveByKeys(event) {
