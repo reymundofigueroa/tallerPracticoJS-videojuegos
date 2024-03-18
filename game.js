@@ -53,10 +53,15 @@ function setCanvasSize() {
         canvasSize = window.innerHeight * 0.8
     }
 
+    canvasSize = Number(canvasSize.toFixed(0))
+
     canvas.setAttribute('width', canvasSize)
     canvas.setAttribute('height', canvasSize)
 
     elementsSize = canvasSize / 10
+
+    playerPosition.x = undefined
+    playerPosition.y = undefined
     startGame()
 }
 
@@ -146,9 +151,10 @@ function levelFail() {
         level = 0
         lives = 3
     }
-/*Cuando chocamos con un enemigo la posición de nuestro playet vuelve a ser undefined, luego llamamos a la función starGame() para que ubique nuevamente a nuestro player en la puerta de salida */    
+/*Cuando chocamos con un enemigo la posición de nuestro player vuelve a ser undefined, luego llamamos a la función starGame() para que ubique nuevamente a nuestro player en la puerta de salida */    
     playerPosition.x = undefined
     playerPosition.y = undefined
+
     startGame()
 }
 //Conpletaste el juego
